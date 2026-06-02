@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tres Marias Cabin by AVM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --forest: #1a2e1a; --deep: #0d1a0d; --gold: #c9a84c; --gold-light: #e8c97a;
+      --cream: #f5f0e8; --warm-white: #faf8f4; --stone: #8b7355; --teal: #2d7a6e;
+      --teal-light: #3d9e8f; --text-dark: #1a1a1a; --text-mid: #4a4a4a;
+      --text-light: #8a8a8a; --border: #e0d8cc;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08); --shadow-lg: 0 12px 48px rgba(0,0,0,0.14);
+      --reserved: #c0392b; --reserved-bg: #fde8e8; --reserved-light: #fff0f0;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--warm-white); color: var(--text-dark); }
+    .app { min-height: 100vh; }
+
+    /* NAV */
+    .nav { background: var(--deep); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+    .nav-brand { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.1rem; font-weight: 700; letter-spacing: 0.02em; }
+    .nav-brand span { color: var(--cream); font-weight: 400; font-style: italic; font-size: 0.85rem; display: block; }
+    .nav-tabs { display: flex; gap: 0.5rem; }
+    .nav-tab { background: none; border: 1.5px solid transparent; color: var(--cream); padding: 0.4rem 1.1rem; border-radius: 20px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; }
+    .nav-tab:hover { border-color: var(--gold); color: var(--gold); }
+    .nav-tab.active { background: var(--gold); color: var(--deep); border-color: var(--gold); font-weight: 600; }
+
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* HERO */
+    .hero { background: linear-gradient(160deg, var(--deep) 0%, #1f3a1f 50%, #0a2018 100%); min-height: 88vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+    .hero-tag { background: var(--gold); color: var(--deep); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 20px; margin-bottom: 1.5rem; display: inline-block; position: relative; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 4.5rem); color: var(--cream); line-height: 1.15; margin-bottom: 0.5rem; position: relative; }
+    .hero h1 em { color: var(--gold); font-style: italic; }
+    .hero-sub { color: #a0b8a0; font-size: 1.05rem; max-width: 560px; line-height: 1.7; margin: 1.2rem auto 2.5rem; font-weight: 300; position: relative; }
+    .hero-loc { color: var(--stone); font-size: 0.88rem; margin-bottom: 2rem; position: relative; }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+    .btn-primary { background: var(--gold); color: var(--deep); border: none; padding: 0.85rem 2.2rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
+    .btn-outline { background: none; color: var(--cream); border: 1.5px solid rgba(245,240,232,0.3); padding: 0.85rem 2.2rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn-outline:hover { border-color: var(--cream); background: rgba(245,240,232,0.07); }
+
+    /* PHOTO STRIP */
+    .photo-strip { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 260px 260px; gap: 4px; max-height: 524px; }
+    .photo-strip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-strip .photo-main { grid-row: 1 / 3; }
+
+    /* SECTION */
+    .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.6rem; }
+    .section h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--forest); margin-bottom: 1rem; }
+    .section-desc { color: var(--text-mid); font-size: 1rem; line-height: 1.75; max-width: 620px; }
+
+    /* AMENITIES */
+    .amenities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+    .amenity-card { background: var(--cream); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; text-align: center; }
+    .amenity-card .icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .amenity-card .lbl { font-size: 0.82rem; color: var(--text-mid); font-weight: 500; }
+
+    /* PRICING INFO BANNER */
+    .pricing-note { background: linear-gradient(135deg, #1a2e1a, #2d5a3d); border-radius: 16px; padding: 1.5rem 2rem; margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; }
+    .pricing-note-item { color: var(--cream); }
+    .pricing-note-item .pn-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light); font-weight: 600; margin-bottom: 0.35rem; }
+    .pricing-note-item .pn-val { font-size: 0.88rem; line-height: 1.6; color: #c8d8c8; }
+    .pricing-note-item .pn-val strong { color: var(--gold); }
+
+    /* PACKAGES */
+    .packages-section { background: #f7f5f0; padding: 5rem 2rem; }
+    .packages-inner { max-width: 1100px; margin: 0 auto; }
+    .packages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+    .pkg-card { border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; background: white; transition: all 0.2s; position: relative; }
+    .pkg-card:hover { border-color: var(--gold); box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+    .pkg-card-img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .pkg-card-body { padding: 1.2rem 1.4rem 1.4rem; }
+    .pkg-badge { display: inline-block; color: white; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 20px; margin-bottom: 0.8rem; }
+    .pkg-badge.day { background: #b07d2e; }
+    .pkg-badge.overnight { background: var(--teal); }
+    .pkg-badge.event { background: #5a3a8a; }
+    .pkg-badge.cabin { background: var(--forest); }
+
+    /* RESERVED OVERLAY ON PACKAGE CARD */
+    .pkg-card.is-reserved { border-color: var(--reserved) !important; }
+    .pkg-card.is-reserved:hover { border-color: var(--reserved) !important; }
+    .reserved-ribbon {
+      position: absolute; top: 12px; right: -28px;
+      background: var(--reserved); color: white;
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.3rem 2.2rem; transform: rotate(35deg);
+      box-shadow: 0 2px 8px rgba(192,57,43,0.4);
+      pointer-events: none; z-index: 10;
+    }
+    .reserved-date-banner {
+      background: var(--reserved-light); border: 1px solid #fca5a5; border-radius: 8px;
+      padding: 0.6rem 0.9rem; margin-top: 0.8rem;
+      font-size: 0.78rem; color: var(--reserved); font-weight: 600;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .reserved-dates-list { font-size: 0.72rem; color: #9b1c1c; font-weight: 400; margin-top: 0.2rem; }
+
+    .pkg-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--forest); margin-bottom: 0.4rem; line-height: 1.35; }
+    .pkg-price { font-size: 1.8rem; font-weight: 700; color: var(--gold); margin: 0.6rem 0; }
+    .pkg-price span { font-size: 0.85rem; color: var(--text-light); font-weight: 400; }
+    .pkg-price-alt { font-size: 0.82rem; color: var(--text-mid); margin-bottom: 0.4rem; }
+    .pkg-price-alt strong { color: var(--stone); }
+    .pkg-detail { font-size: 0.82rem; color: var(--text-mid); margin-bottom: 0.22rem; display: flex; align-items: center; gap: 0.4rem; }
+    .pkg-actions { display: flex; gap: 0.6rem; margin-top: 1.2rem; }
+    .pkg-see-details { flex: 1; background: white; color: var(--forest); border: 1.5px solid var(--border); padding: 0.65rem 0.5rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .pkg-see-details:hover { border-color: var(--forest); background: #f7f5f0; }
+    .pkg-book { flex: 1; background: var(--forest); color: var(--gold); border: none; padding: 0.65rem 0.5rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .pkg-book:hover { background: var(--deep); }
+    .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    .filter-btn { background: white; color: var(--text-mid); border: 1.5px solid var(--border); padding: 0.4rem 1.1rem; border-radius: 20px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+    .filter-btn.active { background: var(--forest); color: var(--gold); border-color: var(--forest); }
+
+    /* BOOKING FORM */
+    .booking-section { background: linear-gradient(135deg, var(--forest), var(--deep)); padding: 5rem 2rem; min-height: 100vh; }
+    .booking-inner { max-width: 760px; margin: 0 auto; }
+    .booking-inner .section-tag { color: var(--gold-light); }
+    .booking-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--cream); margin-bottom: 0.5rem; }
+    .booking-form { background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2); border-radius: 20px; padding: 2.5rem; margin-top: 2.5rem; backdrop-filter: blur(10px); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; color: var(--gold-light); text-transform: uppercase; }
+    .form-group input, .form-group select, .form-group textarea { background: rgba(255,255,255,0.07); border: 1px solid rgba(201,168,76,0.25); border-radius: 8px; padding: 0.75rem 1rem; color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 0.92rem; transition: border 0.2s; width: 100%; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
+    .form-group select option { background: var(--deep); color: var(--cream); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(245,240,232,0.35); }
+    .form-note { font-size: 0.78rem; color: #7a9e7a; margin-top: 0.3rem; }
+    .form-submit { width: 100%; background: var(--gold); color: var(--deep); border: none; padding: 1rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 1.5rem; letter-spacing: 0.03em; transition: all 0.2s; }
+    .form-submit:hover { background: var(--gold-light); }
+    .form-submit:disabled { background: #5a5a5a; color: #9a9a9a; cursor: not-allowed; transform: none; }
+    .form-group-full { grid-column: 1 / -1; }
+
+    /* RESERVED WARNING IN BOOKING FORM */
+    .reserved-warning {
+      background: rgba(192,57,43,0.15); border: 1.5px solid rgba(192,57,43,0.5);
+      border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.2rem;
+      display: none;
+    }
+    .reserved-warning.show { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .reserved-warning-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .reserved-warning h4 { color: #ff8a80; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .reserved-warning p { color: #ffb3ae; font-size: 0.82rem; line-height: 1.5; }
+    .reserved-warning .suggest-dates { color: #ffcdd2; font-size: 0.78rem; margin-top: 0.4rem; }
+
+    /* AVAILABLE DATES INDICATOR */
+    .availability-bar {
+      background: rgba(45,122,110,0.15); border: 1px solid rgba(45,122,110,0.3);
+      border-radius: 10px; padding: 0.8rem 1rem; margin-top: 0.5rem;
+      font-size: 0.78rem; color: #7fd4c8; display: none;
+    }
+    .availability-bar.show { display: block; }
+    .availability-bar .avail-title { font-weight: 700; margin-bottom: 0.4rem; color: #a0e8e0; }
+    .avail-dates-grid { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; }
+    .avail-date-chip { background: rgba(45,122,110,0.2); border: 1px solid rgba(45,122,110,0.3); border-radius: 20px; padding: 0.2rem 0.6rem; font-size: 0.72rem; color: #7fd4c8; }
+    .avail-date-chip.taken { background: rgba(192,57,43,0.15); border-color: rgba(192,57,43,0.3); color: #ff8a80; text-decoration: line-through; }
+
+    /* CONTACT */
+    .contact-bar { background: var(--deep); border-top: 1px solid rgba(201,168,76,0.2); padding: 2rem; text-align: center; }
+    .contact-bar p { color: var(--stone); font-size: 0.88rem; margin-bottom: 0.3rem; }
+    .contact-bar a { color: var(--gold); text-decoration: none; font-weight: 600; }
+    .contact-bar .phone { color: var(--cream); font-size: 1.2rem; font-weight: 700; margin: 0.5rem 0; }
+
+    /* ADMIN */
+    .admin-layout { display: flex; min-height: calc(100vh - 64px); }
+    .admin-sidebar { width: 220px; background: var(--deep); border-right: 1px solid rgba(201,168,76,0.15); padding: 1.5rem 0; flex-shrink: 0; }
+    .admin-nav-item { display: flex; align-items: center; gap: 0.7rem; padding: 0.75rem 1.5rem; color: #8aaa8a; font-size: 0.88rem; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
+    .admin-nav-item:hover { color: var(--cream); background: rgba(255,255,255,0.04); }
+    .admin-nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(201,168,76,0.06); font-weight: 600; }
+    .admin-content { flex: 1; background: #f7f6f3; padding: 2.5rem; overflow-y: auto; }
+    .admin-header { margin-bottom: 2rem; }
+    .admin-header h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--forest); }
+    .admin-header p { color: var(--text-light); font-size: 0.88rem; margin-top: 0.25rem; }
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2.5rem; }
+    .stat-card { background: white; border-radius: 14px; padding: 1.4rem; border: 1px solid var(--border); }
+    .stat-card .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); font-weight: 600; margin-bottom: 0.5rem; }
+    .stat-card .stat-val { font-size: 2rem; font-weight: 700; color: var(--forest); }
+    .stat-card .stat-sub { font-size: 0.78rem; color: var(--teal); margin-top: 0.25rem; }
+
+    /* TABLE */
+    .table-card { background: white; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+    .table-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 0.8rem; }
+    .table-toolbar h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--forest); }
+    .table-search { background: #f3f1ed; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; width: 220px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    th { background: #f9f7f4; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-light); font-weight: 600; padding: 0.9rem 1.2rem; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 1rem 1.2rem; font-size: 0.88rem; color: var(--text-mid); border-bottom: 1px solid #f0ede8; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #faf9f6; }
+    .status-badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .status-confirmed { background: #d4f4e4; color: #1a6640; }
+    .status-pending { background: #fef3cd; color: #856404; }
+    .status-cancelled { background: #fde8e8; color: #8b1a1a; }
+    .status-reserved { background: #fde8e8; color: var(--reserved); }
+    .action-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 0.3rem 0.7rem; font-size: 0.78rem; cursor: pointer; transition: all 0.15s; color: var(--text-mid); margin-right: 0.3rem; font-family: 'DM Sans', sans-serif; }
+    .action-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .action-btn.danger:hover { border-color: #c0392b; color: #c0392b; }
+    .empty-state { text-align: center; padding: 3rem 2rem; color: var(--text-light); }
+    .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .empty-state p { font-size: 0.9rem; }
+
+    /* RESERVED DATES PANEL IN ADMIN */
+    .reserved-dates-panel { background: white; border-radius: 16px; border: 1px solid var(--border); padding: 1.5rem; margin-top: 1.5rem; }
+    .reserved-dates-panel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--forest); margin-bottom: 1rem; }
+    .reserved-pkg-group { margin-bottom: 1.2rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); }
+    .reserved-pkg-group:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .reserved-pkg-name { font-size: 0.85rem; font-weight: 700; color: var(--forest); margin-bottom: 0.5rem; }
+    .reserved-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .reserved-chip { background: var(--reserved-bg); color: var(--reserved); border: 1px solid #fca5a5; border-radius: 20px; padding: 0.25rem 0.75rem; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem; }
+    .reserved-chip button { background: none; border: none; cursor: pointer; color: var(--reserved); font-size: 0.8rem; line-height: 1; padding: 0; margin-left: 0.2rem; opacity: 0.7; }
+    .reserved-chip button:hover { opacity: 1; }
+
+    /* OFFERS TABLE */
+    .offer-icon { font-size: 1.4rem; }
+    .admin-header-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+    .add-offer-btn { background: var(--forest); color: var(--gold); border: none; padding: 0.55rem 1.3rem; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; transition: background 0.2s; }
+    .add-offer-btn:hover { background: var(--deep); }
+
+    /* PACKAGE DETAIL MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box { background: white; border-radius: 20px; width: 100%; max-width: 660px; max-height: 90vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,0.3); transform: translateY(28px) scale(0.97); transition: transform 0.28s; }
+    .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+    .modal-photo-hero { width: 100%; height: 240px; overflow: hidden; display: block; }
+    .modal-photo-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .modal-photo-hero.fallback { background: linear-gradient(135deg,#1a2e1a,#2d5a3d); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+    .modal-inner { padding: 1.6rem 1.8rem 1.8rem; }
+    .modal-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .modal-pkg-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--forest); line-height: 1.3; }
+    .modal-pkg-price { font-size: 1.6rem; font-weight: 700; color: var(--gold); white-space: nowrap; margin-left: 1rem; }
+    .modal-pkg-price small { font-size: 0.8rem; color: var(--text-light); font-weight: 400; }
+    .modal-desc { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 1.2rem; }
+    .modal-section-lbl { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.6rem; }
+    .modal-features { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 1rem; margin-bottom: 1.4rem; }
+    .modal-feature-item { font-size: 0.83rem; color: var(--text-mid); display: flex; align-items: center; gap: 0.45rem; }
+    .modal-feature-item::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .modal-rate-box { background: #f7f5f0; border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; }
+    .modal-rate-row { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-mid); padding: 0.3rem 0; border-bottom: 1px solid var(--border); }
+    .modal-rate-row:last-child { border-bottom: none; font-weight: 700; color: var(--forest); }
+
+    /* Reserved dates in modal */
+    .modal-reserved-box { background: var(--reserved-light); border: 1px solid #fca5a5; border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; }
+    .modal-reserved-box .modal-section-lbl { color: var(--reserved); }
+    .modal-reserved-dates { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+    .modal-reserved-date { background: white; border: 1px solid #fca5a5; border-radius: 20px; padding: 0.25rem 0.75rem; font-size: 0.75rem; font-weight: 700; color: var(--reserved); }
+
+    .modal-close-btn { background: #f0ede8; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; color: var(--text-mid); flex-shrink: 0; transition: background 0.15s; }
+    .modal-close-btn:hover { background: #e0dbd3; }
+    .modal-cta-row { display: flex; gap: 0.8rem; }
+    .modal-reserve-btn { flex: 1; background: var(--forest); color: var(--gold); border: none; padding: 0.9rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .modal-reserve-btn:hover { background: var(--deep); }
+
+    /* ADMIN MODALS */
+    .admin-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(4px); }
+    .admin-modal-overlay.hidden { display: none; }
+    .admin-modal { background: white; border-radius: 20px; padding: 2rem; max-width: 560px; width: 100%; box-shadow: 0 24px 80px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+    .admin-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--forest); margin-bottom: 1.5rem; }
+    .admin-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .admin-modal .form-group { margin-bottom: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+    .admin-modal .form-group label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; color: var(--text-light); text-transform: uppercase; }
+    .admin-modal .form-group input,
+    .admin-modal .form-group select,
+    .admin-modal .form-group textarea { background: #f7f5f0; border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.9rem; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text-dark); width: 100%; }
+    .admin-modal .form-group input:focus,
+    .admin-modal .form-group select:focus,
+    .admin-modal .form-group textarea:focus { outline: none; border-color: var(--teal); }
+    .admin-modal .form-group textarea { resize: vertical; min-height: 80px; }
+    .admin-modal-actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; justify-content: flex-end; }
+    .btn-cancel { background: #f0ede8; border: none; padding: 0.6rem 1.4rem; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text-mid); font-weight: 500; }
+    .btn-cancel:hover { background: #e0dbd3; }
+    .btn-save { background: var(--forest); color: var(--gold); border: none; padding: 0.6rem 1.4rem; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; }
+    .btn-save:hover { background: var(--deep); }
+
+    /* BOOKING SUMMARY BOX */
+    .booking-summary { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.25); border-radius: 14px; padding: 1.4rem; margin-bottom: 1.5rem; }
+    .booking-summary h4 { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 1rem; margin-bottom: 1rem; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 0.83rem; color: #b0c8b0; padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .summary-row:last-child { border-bottom: none; font-weight: 700; color: var(--gold-light); font-size: 0.95rem; margin-top: 0.4rem; padding-top: 0.6rem; border-top: 1px solid rgba(201,168,76,0.2); }
+
+    /* TOAST NOTIFICATION */
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--forest); color: var(--gold-light); padding: 0.9rem 1.4rem; border-radius: 12px; font-size: 0.88rem; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,0.25); z-index: 9999; transform: translateY(100px); opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); border-left: 4px solid var(--gold); max-width: 320px; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast .toast-icon { margin-right: 0.5rem; }
+
+    /* CLEAR DATA BUTTON */
+    .danger-zone { margin-top: 2rem; padding: 1.2rem 1.5rem; background: #fff5f5; border: 1px solid #fecaca; border-radius: 12px; }
+    .danger-zone p { font-size: 0.82rem; color: #9b1c1c; margin-bottom: 0.8rem; }
+    .btn-danger { background: #dc2626; color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; transition: background 0.2s; }
+    .btn-danger:hover { background: #b91c1c; }
+
+    /* STORAGE INDICATOR */
+    .storage-indicator { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--teal); padding: 0.5rem 1.5rem; }
+    .storage-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-tabs { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .admin-layout { flex-direction: column; }
+      .admin-sidebar { width: 100%; display: flex; overflow-x: auto; padding: 0.5rem; }
+      .admin-nav-item { border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+      .admin-nav-item.active { border-bottom-color: var(--gold); border-left-color: transparent; }
+      .modal-features { grid-template-columns: 1fr; }
+      .pricing-note { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"><span class="toast-icon"></span><span id="toastMsg"></span></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-brand">
+      Tres Marias Cabin
+      <span>by AVM</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('home')">Home</button>
+      <button class="nav-tab" onclick="showPage('packages')">Packages</button>
+      <button class="nav-tab" onclick="showPage('booking')">Book Now</button>
+    </div>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div id="page-home" class="page active">
+    <section class="hero">
+      <div class="hero-tag">NOW ACCEPTING RESERVATIONS</div>
+      <h1>Tres Marias Cabin<br/><em>by AVM</em></h1>
+      <p class="hero-sub">Nature meets comfort — your next perfect getaway for rest, reunions, or retreats.</p>
+      <p class="hero-loc">📍 Purok 6 Pinagtung-ulan, Lipa City, Batangas</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="showPage('booking')">Reserve Now</button>
+        <button class="btn-outline" onclick="showPage('packages')">View Packages</button>
+      </div>
+    </section>
+
+    <!-- Photo Strip -->
+    <div class="photo-strip">
+      <img class="photo-main" src="c:\Users\Crishia Joy Atienza\Desktop\499760274_599550166487886_405057425850098808_n.jpg" alt="A-Frame Cabins" />
+      <img src="c:\Users\Crishia Joy Atienza\Desktop\499432501_599549866487916_987747714156572737_n.jpg" alt="Pool" />
+      <img src="c:\Users\Crishia Joy Atienza\Desktop\499969739_599549429821293_4116572021114622515_n.jpg" alt="Interior" />
+      <img src="c:\Users\Crishia Joy Atienza\Desktop\499715286_599549623154607_3955481897262701181_n.jpg" alt="Amenities" />
+      <img src="c:\Users\Crishia Joy Atienza\Desktop\500059676_599550179821218_8147045509845660962_n.jpg" alt="Event Hall" />
+    </div>
+
+    <!-- About + Amenities -->
+    <div class="section">
+      <p class="section-tag">The Experience</p>
+      <h2>Your Nature Sanctuary Awaits</h2>
+      <p class="section-desc">Escape the city and unwind in our A-Frame cabins nestled in nature. Enjoy a serene emerald-toned infinity pool, al fresco dining, and open-sky evenings with family and friends.</p>
+      <div class="amenities-grid">
+        <div class="amenity-card"><div class="icon">🏠</div><div class="lbl">A-Frame Cabin<br/>Good for 8 guests</div></div>
+        <div class="amenity-card"><div class="icon">🌊</div><div class="lbl">Sukabumi Stone<br/>Infinity Pool (50 sqm)</div></div>
+        <div class="amenity-card"><div class="icon">🎤</div><div class="lbl">Videoke Setup<br/>in Pavilion</div></div>
+        <div class="amenity-card"><div class="icon">🍳</div><div class="lbl">Basic Kitchen<br/>& Griller</div></div>
+        <div class="amenity-card"><div class="icon">🚿</div><div class="lbl">Outdoor<br/>Washroom</div></div>
+        <div class="amenity-card"><div class="icon">🅿️</div><div class="lbl">Gated Parking<br/>10–15 Vehicles</div></div>
+        <div class="amenity-card"><div class="icon">🌿</div><div class="lbl">Surrounded<br/>by Nature</div></div>
+        <div class="amenity-card"><div class="icon">🎪</div><div class="lbl">Event Hall<br/>Up to 100 pax</div></div>
+      </div>
+      <div class="pricing-note">
+        <div class="pricing-note-item">
+          <div class="pn-label">⏱ Duration</div>
+          <div class="pn-val"><strong>22-hour stay</strong><br/>Cabin rentals run 22 hrs</div>
+        </div>
+        <div class="pricing-note-item">
+          <div class="pn-label">👥 Guest Policy</div>
+          <div class="pn-val">Good for <strong>8 guests</strong> per cabin<br/>+₱300/head beyond 16 pax<br/>Must rent 2 cabins if group exceeds 8</div>
+        </div>
+        <div class="pricing-note-item">
+          <div class="pn-label">📅 Rates Vary</div>
+          <div class="pn-val"><strong>Mon–Thu:</strong> ₱7,000/cabin<br/><strong>Fri–Sun & Holidays:</strong> ₱7,500/cabin</div>
+        </div>
+        <div class="pricing-note-item">
+          <div class="pn-label">🎉 Events</div>
+          <div class="pn-val">Event Hall packages available<br/>for <strong>61–100 pax</strong> groups</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-bar">
+      <p>For reservations &amp; inquiries</p>
+      <div class="phone">📞 +63 938 557 5257</div>
+      <p><a href="#">Message us on Facebook</a> · <a href="#">Instagram</a></p>
+    </div>
+  </div>
+
+  <!-- PACKAGES PAGE -->
+  <div id="page-packages" class="page">
+    <div class="packages-section">
+      <div class="packages-inner">
+        <p class="section-tag">Our Offerings</p>
+        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--forest);margin-bottom:0.5rem;">Packages &amp; Rates</h2>
+        <p style="color:var(--text-mid);font-size:0.95rem;line-height:1.7;max-width:600px;">Choose the package that fits your group and occasion. All cabin stays are 22 hours and include pool access, pavilion use, and gated parking.</p>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterPkgs(this,'all')">All Packages</button>
+          <button class="filter-btn" onclick="filterPkgs(this,'cabin')">Cabin Stay</button>
+          <button class="filter-btn" onclick="filterPkgs(this,'event')">Event Hall</button>
+          <button class="filter-btn" onclick="filterPkgs(this,'combo')">Cabin + Event</button>
+          <button class="filter-btn" onclick="filterPkgs(this,'day')">Daytime</button>
+        </div>
+
+        <div class="packages-grid" id="packagesGrid">
+          <!-- CABIN STAY: MON–THU -->
+          <div class="pkg-card" data-cat="cabin" data-pkg-id="cabin-weekday">
+            <img class="pkg-card-img" src="c:\Users\Crishia Joy Atienza\Desktop\499760274_599550166487886_405057425850098808_n.jpg" alt="A-Frame Cabins" />
+            <div class="pkg-card-body">
+              <span class="pkg-badge cabin">Cabin Stay</span>
+              <div class="pkg-name">A-Frame Cabin Stay<br/><small style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--text-light)">Mon – Thu</small></div>
+              <div class="pkg-price">₱7,000 <span>/ cabin · 22 hrs</span></div>
+              <div class="pkg-detail">🏡 Good for up to 8 guests</div>
+              <div class="pkg-detail">🌊 Sukabumi infinity pool access</div>
+              <div class="pkg-detail">🎤 Pavilion with videoke &amp; griller</div>
+              <div class="pkg-detail">🅿️ Gated parking (10–15 vehicles)</div>
+              <div class="pkg-detail" style="color:var(--stone);">⚠️ Must rent 2 cabins if group &gt; 8</div>
+              <div id="reserved-info-cabin-weekday"></div>
+              <div class="pkg-actions">
+                <button class="pkg-see-details" onclick="openModal('cabin-weekday')">See Details</button>
+                <button class="pkg-book" onclick="showPage('booking')">Book Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CABIN STAY: FRI–SUN & HOLIDAYS -->
+          <div class="pkg-card" data-cat="cabin" data-pkg-id="cabin-weekend">
+            <img class="pkg-card-img" src="c:\Users\Crishia Joy Atienza\Desktop\499969739_599549429821293_4116572021114622515_n.jpg" alt="Cabin Interior" />
+            <div class="pkg-card-body">
+              <span class="pkg-badge overnight">Cabin Stay</span>
+              <div class="pkg-name">A-Frame Cabin Stay<br/><small style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--text-light)">Fri – Sun &amp; Holidays</small></div>
+              <div class="pkg-price">₱7,500 <span>/ cabin · 22 hrs</span></div>
+              <div class="pkg-detail">🏡 Good for up to 8 guests</div>
+              <div class="pkg-detail">🌊 Sukabumi infinity pool access</div>
+              <div class="pkg-detail">🎤 Pavilion with videoke &amp; griller</div>
+              <div class="pkg-detail">🅿️ Gated parking (10–15 vehicles)</div>
+              <div class="pkg-detail" style="color:var(--stone);">👥 +₱300/head beyond 16 guests</div>
+              <div id="reserved-info-cabin-weekend"></div>
+              <div class="pkg-actions">
+                <button class="pkg-see-details" onclick="openModal('cabin-weekend')">See Details</button>
+                <button class="pkg-book" onclick="showPage('booking')">Book Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CABIN + EVENT HALL: 2 CABINS -->
+          <div class="pkg-card" data-cat="combo" data-pkg-id="combo-2cabin">
+            <img class="pkg-card-img" src="c:\Users\Crishia Joy Atienza\Desktop\500059676_599550179821218_8147045509845660962_n.jpg" alt="Event Hall" />
+            <div class="pkg-card-body">
+              <span class="pkg-badge event">Cabin + Event Hall</span>
+              <div class="pkg-name">Cabin + Event Hall<br/><small style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--text-light)">22 Hours · 2 Cabins · 61–100 pax</small></div>
+              <div class="pkg-price">₱21,000 <span>/ 2 cabins</span></div>
+              <div class="pkg-price-alt">Also available: <strong>₱19,000</strong> with 1 cabin</div>
+              <div class="pkg-detail">🏠 2 A-Frame cabins (up to 16 guests)</div>
+              <div class="pkg-detail">🎪 Full event hall access · 22 hrs</div>
+              <div class="pkg-detail">🌊 Sukabumi pool access</div>
+              <div class="pkg-detail">🎤 Pavilion · Kitchen · Videoke</div>
+              <div class="pkg-detail">👥 Ideal for 61–100 pax events</div>
+              <div id="reserved-info-combo-2cabin"></div>
+              <div class="pkg-actions">
+                <button class="pkg-see-details" onclick="openModal('combo-2cabin')">See Details</button>
+                <button class="pkg-book" onclick="showPage('booking')">Book Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- DAYTIME: 2 CABINS -->
+          <div class="pkg-card" data-cat="day" data-pkg-id="day-2cabin">
+            <img class="pkg-card-img" src="c:\Users\Crishia Joy Atienza\Desktop\499715286_599549623154607_3955481897262701181_n.jpg" alt="Pool" />
+            <div class="pkg-card-body">
+              <span class="pkg-badge day">Daytime</span>
+              <div class="pkg-name">Daytime Package<br/><small style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--text-light)">8AM – 6PM · 2 Cabins · 61–100 pax</small></div>
+              <div class="pkg-price">₱17,000 <span>/ 2 cabins</span></div>
+              <div class="pkg-price-alt">Also available: <strong>₱16,000</strong> with 1 cabin</div>
+              <div class="pkg-detail">🏠 2 A-Frame cabins included</div>
+              <div class="pkg-detail">⏱ 8:00 AM to 6:00 PM (10 hrs)</div>
+              <div class="pkg-detail">🌊 Sukabumi pool access</div>
+              <div class="pkg-detail">🎤 Pavilion · Kitchen · Videoke</div>
+              <div class="pkg-detail">👥 Ideal for 61–100 pax events</div>
+              <div id="reserved-info-day-2cabin"></div>
+              <div class="pkg-actions">
+                <button class="pkg-see-details" onclick="openModal('daytime-2cabin')">See Details</button>
+                <button class="pkg-book" onclick="showPage('booking')">Book Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVENT HALL ONLY: 8AM–5PM -->
+          <div class="pkg-card" data-cat="event" data-pkg-id="hall-morning">
+            <img class="pkg-card-img" src="c:\Users\Crishia Joy Atienza\Desktop\500059676_599550179821218_8147045509845660962_n.jpg" alt="Event Hall" />
+            <div class="pkg-card-body">
+              <span class="pkg-badge event">Event Hall Only</span>
+              <div class="pkg-name">Event Hall Only<br/><small style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--text-light)">Morning Slot · 8AM – 5PM</small></div>
+              <div class="pkg-price">₱15,000 <span>/ event hall</span></div>
+              <div class="pkg-detail">🏛️ Event hall only (no cabin)</div>
+              <div class="pkg-detail">⏱ 8:00 AM – 5:00 PM (9 hrs)</div>
+              <div class="pkg-detail">🌊 Pool access included</div>
+              <div class="pkg-detail">🎤 Pavilion amenities included</div>
+              <div class="pkg-detail">👥 Capacity: 61–100 pax</div>
+              <div id="reserved-info-hall-morning"></div>
+              <div class="pkg-actions">
+                <button class="pkg-see-details" onclick="openModal('hall-morning')">See Details</button>
+                <button class="pkg-book" onclick="showPage('booking')">Book Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVENT HALL ONLY: 11AM–8PM -->
+          <div class="pkg-card" data-cat="event" data-pkg-id="hall-afternoon">
+            <img class="pkg-card-img" src="c:\Users\Crishia Joy Atienza\Desktop\500059676_599550179821218_8147045509845660962_n.jpg" alt="Amenities" />
+            <div class="pkg-card-body">
+              <span class="pkg-badge event">Event Hall Only</span>
+              <div class="pkg-name">Event Hall Only<br/><small style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--text-light)">Afternoon Slot · 11AM – 8PM</small></div>
+              <div class="pkg-price">₱17,000 <span>/ event hall</span></div>
+              <div class="pkg-detail">🏛️ Event hall only (no cabin)</div>
+              <div class="pkg-detail">⏱ 11:00 AM – 8:00 PM (9 hrs)</div>
+              <div class="pkg-detail">🌊 Pool access included</div>
+              <div class="pkg-detail">🎤 Pavilion amenities included</div>
+              <div class="pkg-detail">👥 Capacity: 61–100 pax</div>
+              <div id="reserved-info-hall-afternoon"></div>
+              <div class="pkg-actions">
+                <button class="pkg-see-details" onclick="openModal('hall-afternoon')">See Details</button>
+                <button class="pkg-book" onclick="showPage('booking')">Book Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:2rem;padding:1.4rem 1.8rem;background:white;border:1px solid var(--border);border-radius:14px;">
+          <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:0.8rem;">📋 Important Rate Notes</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.6rem 2rem;">
+            <p style="font-size:0.83rem;color:var(--text-mid);">• All cabin stays are <strong>22 hours</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Weekday rate (Mon–Thu): <strong>₱7,000</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Weekend/Holiday rate (Fri–Sun): <strong>₱7,500</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Each cabin is good for <strong>up to 8 guests</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Groups of 9–16: must rent <strong>2 cabins</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Beyond 16 guests: <strong>+₱300/head</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Event Hall packages for <strong>61–100 pax</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING PAGE -->
+  <div id="page-booking" class="page">
+    <div class="booking-section">
+      <div class="booking-inner">
+        <p class="section-tag">Reservations</p>
+        <h2>Book Your Stay</h2>
+        <p style="color:#7a9e7a;font-size:0.95rem;line-height:1.6;margin-top:0.4rem;">Fill in the form below and we'll confirm your reservation within 24 hours.</p>
+        <div class="booking-form">
+          <div class="booking-summary" id="bookingSummary" style="display:none;">
+            <h4>📋 Booking Summary</h4>
+            <div id="summaryRows"></div>
+          </div>
+
+          <!-- RESERVED WARNING — shown when date+package combo is taken -->
+          <div class="reserved-warning" id="reservedWarning">
+            <div class="reserved-warning-icon">🚫</div>
+            <div>
+              <h4>This date is already RESERVED</h4>
+              <p id="reservedWarningMsg">This package is already booked on the selected date. Please choose a different date or package.</p>
+              <p class="suggest-dates" id="reservedSuggestDates"></p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Juan dela Cruz" id="f_name" oninput="updateSummary()" />
+            </div>
+            <div class="form-group">
+              <label>Contact Number</label>
+              <input type="tel" placeholder="+63 9XX XXX XXXX" id="f_phone" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="juan@email.com" id="f_email" />
+            </div>
+            <div class="form-group">
+              <label>Number of Guests</label>
+              <input type="number" min="1" max="100" placeholder="e.g. 10" id="f_guests" oninput="updateSummary()" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Check-in Date</label>
+              <input type="date" id="f_date" oninput="updateSummary()" />
+            </div>
+            <div class="form-group">
+              <label>Package</label>
+              <select id="f_package" onchange="updateSummary()">
+                <option value="">— Select a Package —</option>
+                <optgroup label="Cabin Stay (22 hrs)">
+                  <option value="cabin-weekday">A-Frame Cabin – Mon to Thu (₱7,000/cabin)</option>
+                  <option value="cabin-weekend">A-Frame Cabin – Fri–Sun &amp; Holidays (₱7,500/cabin)</option>
+                </optgroup>
+                <optgroup label="Cabin + Event Hall (61–100 pax)">
+                  <option value="combo-2cabin">Cabin + Event Hall · 2 Cabins – ₱21,000</option>
+                  <option value="combo-1cabin">Cabin + Event Hall · 1 Cabin – ₱19,000</option>
+                </optgroup>
+                <optgroup label="Daytime Package (61–100 pax)">
+                  <option value="day-2cabin">Daytime 8AM–6PM · 2 Cabins – ₱17,000</option>
+                  <option value="day-1cabin">Daytime 8AM–6PM · 1 Cabin – ₱16,000</option>
+                </optgroup>
+                <optgroup label="Event Hall Only (61–100 pax)">
+                  <option value="hall-morning">Event Hall Only · 8AM–5PM – ₱15,000</option>
+                  <option value="hall-afternoon">Event Hall Only · 11AM–8PM – ₱17,000</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <!-- Availability indicator shown after pkg + date selected -->
+          <div class="availability-bar" id="availabilityBar">
+            <div class="avail-title">📅 Reserved dates for this package:</div>
+            <div class="avail-dates-grid" id="availDatesGrid"></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group-full">
+              <label>Special Requests / Notes</label>
+              <textarea placeholder="e.g. special occasion, dietary needs, room preference…" id="f_notes"></textarea>
+            </div>
+          </div>
+          <p class="form-note">⚠️ Bookings are not confirmed until you receive a confirmation message.</p>
+          <button class="form-submit" id="submitBtn" onclick="submitBooking()">✉️ Send Booking Request</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN PAGE -->
+  <div id="page-admin" class="page">
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div class="admin-nav-item active" onclick="switchAdmin(this,'dashboard')">📊 Dashboard</div>
+        <div class="admin-nav-item" onclick="switchAdmin(this,'bookings')">📅 Bookings</div>
+        <div class="admin-nav-item" onclick="switchAdmin(this,'offers')">🏷️ Packages</div>
+        <div class="admin-nav-item" onclick="switchAdmin(this,'guests')">👥 Guests</div>
+        <div class="admin-nav-item" onclick="switchAdmin(this,'reserved')">🚫 Reserved Dates</div>
+        <div class="storage-indicator"><div class="storage-dot"></div>Data saved locally</div>
+        <div class="admin-nav-item" onclick="logoutStaff()" style="margin-top: auto; color: #ff6b6b;">🚪 Logout</div>
+      </aside>
+      <div class="admin-content">
+
+        <!-- DASHBOARD -->
+        <div class="admin-panel active" id="admin-dashboard">
+          <div class="admin-header"><h2>Dashboard</h2><p>Overview of reservations and resort activity.</p></div>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Total Bookings</div><div class="stat-val" id="stat-total">0</div><div class="stat-sub">All time</div></div>
+            <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-val" id="stat-confirmed">0</div><div class="stat-sub">Active reservations</div></div>
+            <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-val" id="stat-pending">0</div><div class="stat-sub">Awaiting confirmation</div></div>
+            <div class="stat-card"><div class="stat-label">Est. Revenue</div><div class="stat-val" id="stat-revenue">₱0</div><div class="stat-sub">Confirmed bookings</div></div>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar"><h3>Recent Bookings</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Guest</th><th>Package</th><th>Date</th><th>Guests</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="dashboardTableBody">
+                  <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📅</div><p>No bookings yet.</p></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="danger-zone" style="margin-top:2rem;">
+            <p>⚠️ <strong>Danger Zone:</strong> Clear all locally stored data. This cannot be undone.</p>
+            <button class="btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+          </div>
+        </div>
+
+        <!-- BOOKINGS -->
+        <div class="admin-panel" id="admin-bookings">
+          <div class="admin-header-row">
+            <div class="admin-header" style="margin-bottom:0;"><h2>All Bookings</h2><p>Manage and update reservation status.</p></div>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar">
+              <h3>Reservations</h3>
+              <input class="table-search" type="text" placeholder="Search guest or package…" oninput="searchBookings(this.value)" />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Guest</th><th>Contact</th><th>Package</th><th>Date</th><th>Guests</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="bookingsTableBody">
+                  <tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><p>No bookings yet.</p></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PACKAGES -->
+        <div class="admin-panel" id="admin-offers">
+          <div class="admin-header-row">
+            <div class="admin-header" style="margin-bottom:0;"><h2>Packages &amp; Rates</h2><p>Current pricing structure for all offerings.</p></div>
+            <button class="add-offer-btn" onclick="openAddOffer()">+ Add Package</button>
+          </div>
+          <div class="table-card">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Icon</th><th>Package Name</th><th>Category</th><th>Rate</th><th>Duration</th><th>Notes</th><th>Actions</th></tr></thead>
+                <tbody id="offersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- GUESTS -->
+        <div class="admin-panel" id="admin-guests">
+          <div class="admin-header"><h2>Guest List</h2><p>All guests who have submitted booking requests.</p></div>
+          <div class="table-card">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Last Booking</th><th>Total Stays</th></tr></thead>
+                <tbody id="guestsTableBody">
+                  <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👥</div><p>No guests yet.</p></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESERVED DATES PANEL -->
+        <div class="admin-panel" id="admin-reserved">
+          <div class="admin-header">
+            <h2>Reserved Dates</h2>
+            <p>All dates blocked from new bookings. Dates are auto-added when a booking is pending or confirmed, and cleared when cancelled or deleted.</p>
+          </div>
+          <div class="reserved-dates-panel" id="reservedDatesPanel">
+            <div class="empty-state"><div class="empty-icon">📅</div><p>No reserved dates yet.</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKAGE DETAIL MODAL -->
+  <div class="modal-overlay" id="pkgModal" onclick="closePkgModal(event)">
+    <div class="modal-box" id="pkgModalBox"></div>
+  </div>
+
+  <!-- ADD/EDIT OFFER MODAL -->
+  <div class="admin-modal-overlay hidden" id="offerModalOverlay">
+    <div class="admin-modal">
+      <h3 id="offerModalTitle">Add Package</h3>
+      <div class="admin-modal-grid">
+        <div class="form-group"><label>Icon (Emoji)</label><input type="text" id="om_icon" placeholder="e.g. 🏠" maxlength="4" /></div>
+        <div class="form-group"><label>Category</label><select id="om_cat"><option value="cabin">Cabin Stay</option><option value="event">Event Hall</option><option value="combo">Cabin + Event</option><option value="day">Daytime</option></select></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Package Name</label><input type="text" id="om_name" placeholder="e.g. A-Frame Cabin Stay – Weekday" /></div>
+        <div class="form-group"><label>Rate (₱)</label><input type="number" id="om_rate" placeholder="e.g. 7000" /></div>
+        <div class="form-group"><label>Duration / Slot</label><input type="text" id="om_duration" placeholder="e.g. 22 hrs" /></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Notes</label><textarea id="om_notes" placeholder="e.g. Good for 8 guests, Mon–Thu rate"></textarea></div>
+      </div>
+      <div class="admin-modal-actions">
+        <button class="btn-cancel" onclick="closeOfferModal()">Cancel</button>
+        <button class="btn-save" onclick="saveOffer()">Save Package</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .app -->
+
+<script>
+// ============================================================
+//  LOCAL STORAGE KEYS
+// ============================================================
+const LS_KEYS = {
+  BOOKINGS:  'tres_marias_bookings',
+  OFFERS:    'tres_marias_offers',
+  AUTH:      'tres_marias_auth',
+  LAST_PAGE: 'tres_marias_last_page',
+};
+
+// ============================================================
+//  STORAGE HELPERS
+// ============================================================
+function lsGet(key, fallback = null) {
+  try { const raw = localStorage.getItem(key); return raw !== null ? JSON.parse(raw) : fallback; }
+  catch(e) { return fallback; }
+}
+function lsSet(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+  catch(e) { showToast('⚠️ Storage full — data may not be saved.', 4000); return false; }
+}
+function lsDel(key) { try { localStorage.removeItem(key); } catch(e) {} }
+
+// ============================================================
+//  TOAST
+// ============================================================
+let toastTimer = null;
+function showToast(msg, duration = 2800) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), duration);
+}
+
+// ============================================================
+//  SECURITY & ACCESS CONTROL
+// ============================================================
+const STAFF_ACCESS_KEY = "admin123";
+let isAuthenticated = lsGet(LS_KEYS.AUTH, false);
+
+window.addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      const attempt = prompt("Enter Staff Access Key:");
+      if (attempt === STAFF_ACCESS_KEY) {
+        isAuthenticated = true;
+        lsSet(LS_KEYS.AUTH, true);
+        showPage('admin');
+        showToast('✅ Logged in as Staff');
+      } else if (attempt !== null) {
+        alert("Access Denied.");
+      }
+    } else {
+      showPage('admin');
+    }
+  }
+});
+
+function logoutStaff() {
+  isAuthenticated = false;
+  lsDel(LS_KEYS.AUTH);
+  lsDel(LS_KEYS.LAST_PAGE);
+  showPage('home');
+  showToast('👋 Logged out successfully.');
+}
+
+// ============================================================
+//  PHOTO PATHS
+// ============================================================
+const PHOTOS = {
+  cabins:   "c:\\Users\\Crishia Joy Atienza\\Desktop\\499760274_599550166487886_405057425850098808_n.jpg",
+  pool:     "c:\\Users\\Crishia Joy Atienza\\Desktop\\499432501_599549866487916_987747714156572737_n.jpg",
+  interior: "c:\\Users\\Crishia Joy Atienza\\Desktop\\499969739_599549429821293_4116572021114622515_n.jpg",
+  amenities:"c:\\Users\\Crishia Joy Atienza\\Desktop\\499715286_599549623154607_3955481897262701181_n.jpg",
+  eventhall:"c:\\Users\\Crishia Joy Atienza\\Desktop\\500059676_599550179821218_8147045509845660962_n.jpg",
+};
+
+// ============================================================
+//  DEFAULT PACKAGES
+// ============================================================
+const DEFAULT_PACKAGES = [
+  { id:'cabin-weekday',  icon:'🏠', name:'A-Frame Cabin Stay – Weekday',          cat:'cabin', rate:7000,  duration:'22 hrs',   notes:'Mon–Thu · Good for 8 guests' },
+  { id:'cabin-weekend',  icon:'🌙', name:'A-Frame Cabin Stay – Weekend/Holiday',   cat:'cabin', rate:7500,  duration:'22 hrs',   notes:'Fri–Sun & Holidays · +₱300/head beyond 16 pax' },
+  { id:'combo-2cabin',   icon:'🎪', name:'Cabin + Event Hall (2 Cabins)',          cat:'combo', rate:21000, duration:'22 hrs',   notes:'61–100 pax · 2 A-Frame cabins' },
+  { id:'combo-1cabin',   icon:'🏛️', name:'Cabin + Event Hall (1 Cabin)',           cat:'combo', rate:19000, duration:'22 hrs',   notes:'61–100 pax · 1 A-Frame cabin' },
+  { id:'day-2cabin',     icon:'☀️', name:'Daytime Package (2 Cabins)',             cat:'day',   rate:17000, duration:'8AM–6PM',  notes:'61–100 pax · 2 A-Frame cabins' },
+  { id:'day-1cabin',     icon:'🌤️', name:'Daytime Package (1 Cabin)',              cat:'day',   rate:16000, duration:'8AM–6PM',  notes:'61–100 pax · 1 A-Frame cabin' },
+  { id:'hall-morning',   icon:'🏛️', name:'Event Hall Only – Morning Slot',         cat:'event', rate:15000, duration:'8AM–5PM',  notes:'61–100 pax · No cabin included' },
+  { id:'hall-afternoon', icon:'🌆', name:'Event Hall Only – Afternoon Slot',       cat:'event', rate:17000, duration:'11AM–8PM', notes:'61–100 pax · No cabin included' },
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let bookings = lsGet(LS_KEYS.BOOKINGS, []);
+let offers   = lsGet(LS_KEYS.OFFERS,   DEFAULT_PACKAGES);
+let editOfferIdx = null;
+
+function saveBookings() { lsSet(LS_KEYS.BOOKINGS, bookings); }
+function saveOffers()   { lsSet(LS_KEYS.OFFERS, offers); }
+
+// ============================================================
+//  RESERVATION LOGIC — the core new feature
+// ============================================================
+
+/**
+ * Returns a Set of reserved dates (YYYY-MM-DD strings) for a given packageId.
+ * A date is "reserved" if there is any booking for that package on that date
+ * with status 'pending' or 'confirmed' (not 'cancelled').
+ *
+ * Package grouping logic:
+ *  - cabin-weekday and cabin-weekend share the same physical cabin pool,
+ *    so a booking on a date blocks both. Same for combo and day packages
+ *    that use the event hall.
+ */
+function getBlockedDatesForPkg(pkgId) {
+  const blocked = new Set();
+
+  // Define which booking pkgKeys block a given package card
+  // (because some packages share the same physical resource)
+  const blockGroups = {
+    'cabin-weekday':  ['cabin-weekday', 'cabin-weekend'],
+    'cabin-weekend':  ['cabin-weekday', 'cabin-weekend'],
+    'combo-2cabin':   ['combo-2cabin', 'combo-1cabin', 'day-2cabin', 'day-1cabin', 'hall-morning', 'hall-afternoon'],
+    'combo-1cabin':   ['combo-2cabin', 'combo-1cabin', 'day-2cabin', 'day-1cabin', 'hall-morning', 'hall-afternoon'],
+    'day-2cabin':     ['combo-2cabin', 'combo-1cabin', 'day-2cabin', 'day-1cabin', 'hall-morning', 'hall-afternoon'],
+    'day-1cabin':     ['combo-2cabin', 'combo-1cabin', 'day-2cabin', 'day-1cabin', 'hall-morning', 'hall-afternoon'],
+    'hall-morning':   ['combo-2cabin', 'combo-1cabin', 'day-2cabin', 'day-1cabin', 'hall-morning', 'hall-afternoon'],
+    'hall-afternoon': ['combo-2cabin', 'combo-1cabin', 'day-2cabin', 'day-1cabin', 'hall-morning', 'hall-afternoon'],
+  };
+
+  const relatedKeys = blockGroups[pkgId] || [pkgId];
+
+  bookings.forEach(b => {
+    if (b.status === 'cancelled') return; // cancelled bookings free the date
+    // Match by pkgKey stored on booking, or by pkgNames value
+    const bKey = b.pkgKey || getKeyFromName(b.pkg);
+    if (relatedKeys.includes(bKey)) {
+      blocked.add(b.date);
+    }
+  });
+
+  return blocked;
+}
+
+// Helper: reverse lookup pkgKey from display name (for older bookings)
+function getKeyFromName(name) {
+  return Object.entries(pkgNames).find(([k,v]) => v === name)?.[0] || '';
+}
+
+function isDateReserved(pkgId, date) {
+  if (!pkgId || !date) return false;
+  return getBlockedDatesForPkg(pkgId).has(date);
+}
+
+// ============================================================
+//  UPDATE PACKAGE CARDS with RESERVED badges
+// ============================================================
+function refreshPackageCardReservations() {
+  const pkgCardIds = [
+    'cabin-weekday','cabin-weekend','combo-2cabin',
+    'day-2cabin','hall-morning','hall-afternoon'
+  ];
+
+  pkgCardIds.forEach(pkgId => {
+    const card      = document.querySelector(`.pkg-card[data-pkg-id="${pkgId}"]`);
+    const infoEl    = document.getElementById(`reserved-info-${pkgId}`);
+    if (!card || !infoEl) return;
+
+    const blocked   = getBlockedDatesForPkg(pkgId);
+    // Remove existing ribbon
+    card.querySelectorAll('.reserved-ribbon').forEach(r => r.remove());
+    card.classList.remove('is-reserved');
+    infoEl.innerHTML = '';
+
+    if (blocked.size === 0) return;
+
+    // Sort dates
+    const sortedDates = [...blocked].sort();
+    const today = new Date().toISOString().split('T')[0];
+    const upcomingDates = sortedDates.filter(d => d >= today);
+
+    if (upcomingDates.length === 0) return; // only past dates — don't show
+
+    card.classList.add('is-reserved');
+
+    // Ribbon (shows only if the NEXT upcoming date is very soon, i.e. within 14 days, to avoid cluttering)
+    const ribbon = document.createElement('div');
+    ribbon.className = 'reserved-ribbon';
+    ribbon.textContent = 'RESERVED';
+    card.style.position = 'relative';
+    card.insertBefore(ribbon, card.firstChild);
+
+    // Date banner inside card body
+    const fmt = (d) => new Date(d + 'T00:00:00').toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+    const datesList = upcomingDates.slice(0, 5).map(fmt).join(' · ');
+    infoEl.innerHTML = `
+      <div class="reserved-date-banner">
+        🚫 Reserved:
+        <span class="reserved-dates-list">${datesList}${upcomingDates.length > 5 ? ` +${upcomingDates.length - 5} more` : ''}</span>
+      </div>`;
+  });
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function showPage(id) {
+  if (id === 'admin' && !isAuthenticated) { showPage('home'); return; }
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+
+  const tabs = ['home','packages','booking'];
+  const idx = tabs.indexOf(id);
+  if(idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  if(id === 'admin') { renderOffersTable(); renderStats(); }
+  if(id === 'packages') { refreshPackageCardReservations(); }
+
+  if(id !== 'admin') lsSet(LS_KEYS.LAST_PAGE, id);
+  window.scrollTo(0, 0);
+}
+
+function switchAdmin(el, panel) {
+  document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('admin-' + panel).classList.add('active');
+  if(panel === 'offers')    renderOffersTable();
+  if(panel === 'bookings')  renderBookingsTable(bookings);
+  if(panel === 'guests')    renderGuestsTable();
+  if(panel === 'dashboard') renderStats();
+  if(panel === 'reserved')  renderReservedDatesPanel();
+}
+
+// ============================================================
+//  PACKAGE FILTER
+// ============================================================
+function filterPkgs(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#packagesGrid .pkg-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+}
+
+// ============================================================
+//  MODAL DATA
+// ============================================================
+const modalData = {
+  'cabin-weekday': {
+    photo: PHOTOS.cabins,
+    title:'A-Frame Cabin Stay', badge:'Cabin Stay – Mon to Thu', badgeCls:'cabin',
+    price:'₱7,000', priceNote:'per cabin · 22 hours (Mon–Thu)',
+    desc:'Escape to our A-Frame cabin nestled in lush nature. Perfect for small group getaways, barkada trips, and family bonding. Enjoy a 22-hour stay with full resort access.',
+    features:['Good for up to 8 guests','22-hour stay','Sukabumi infinity pool (50 sqm)','Pavilion with videoke','Basic kitchen & griller','Outdoor washroom','Gated parking (10–15 vehicles)','Surrounded by nature'],
+    rates:[['Weekday Rate (Mon–Thu)','₱7,000 / cabin'],['Additional guests (>16)','₱300 / head'],['Must rent 2 cabins','if group exceeds 8']]
+  },
+  'cabin-weekend': {
+    photo: PHOTOS.interior,
+    title:'A-Frame Cabin Stay', badge:'Weekend / Holiday', badgeCls:'overnight',
+    price:'₱7,500', priceNote:'per cabin · 22 hours (Fri–Sun & Holidays)',
+    desc:'Enjoy a weekend or holiday cabin stay at Tres Marias. Book early — weekends fill up fast!',
+    features:['Good for up to 8 guests','22-hour stay','Sukabumi infinity pool (50 sqm)','Pavilion with videoke','Basic kitchen & griller','Outdoor washroom','Gated parking (10–15 vehicles)','Surrounded by nature'],
+    rates:[['Weekend/Holiday Rate','₱7,500 / cabin'],['Additional guests (>16)','₱300 / head'],['Must rent 2 cabins','if group exceeds 8']]
+  },
+  'combo-2cabin': {
+    photo: PHOTOS.eventhall,
+    title:'Cabin + Event Hall (2 Cabins)', badge:'Cabin + Event Hall', badgeCls:'event',
+    price:'₱21,000', priceNote:'2 cabins · 22 hours · 61–100 pax',
+    desc:'The ultimate group package — two A-Frame cabins plus full event hall access for large celebrations, reunions, or corporate events.',
+    features:['2 A-Frame cabins (up to 16 overnight)','Event hall for 61–100 pax','22-hour full access','Sukabumi pool access','Pavilion with videoke & griller','Kitchen access','Gated parking','Also available with 1 cabin at ₱19,000'],
+    rates:[['2 Cabins + Event Hall','₱21,000'],['1 Cabin + Event Hall','₱19,000']]
+  },
+  'daytime-2cabin': {
+    photo: PHOTOS.pool,
+    title:'Daytime Package (2 Cabins)', badge:'Daytime', badgeCls:'day',
+    price:'₱17,000', priceNote:'2 cabins · 8:00 AM – 6:00 PM · 61–100 pax',
+    desc:'A full daytime event package with two A-Frame cabins. Great for daytime celebrations and gatherings.',
+    features:['2 A-Frame cabins','Event hall access','8:00 AM to 6:00 PM (10 hrs)','Sukabumi pool access','Pavilion with videoke & griller','Kitchen access','Gated parking','Also available with 1 cabin at ₱16,000'],
+    rates:[['2 Cabins – Daytime','₱17,000'],['1 Cabin – Daytime','₱16,000']]
+  },
+  'hall-morning': {
+    photo: PHOTOS.eventhall,
+    title:'Event Hall Only – Morning Slot', badge:'Event Hall', badgeCls:'event',
+    price:'₱15,000', priceNote:'8:00 AM – 5:00 PM · 61–100 pax',
+    desc:'Rent the event hall only for a morning/afternoon celebration. Includes pool and pavilion access.',
+    features:['Event hall only (no cabin)','8:00 AM – 5:00 PM (9 hours)','Capacity: 61–100 pax','Sukabumi pool access','Pavilion amenities','Gated parking'],
+    rates:[['Event Hall Morning Slot','₱15,000'],['Afternoon Slot (11AM–8PM)','₱17,000']]
+  },
+  'hall-afternoon': {
+    photo: PHOTOS.amenities,
+    title:'Event Hall Only – Afternoon Slot', badge:'Event Hall', badgeCls:'event',
+    price:'₱17,000', priceNote:'11:00 AM – 8:00 PM · 61–100 pax',
+    desc:'Rent the event hall for an afternoon-to-evening celebration. Ideal for parties extending into the early evening.',
+    features:['Event hall only (no cabin)','11:00 AM – 8:00 PM (9 hours)','Capacity: 61–100 pax','Sukabumi pool access','Pavilion amenities','Gated parking'],
+    rates:[['Event Hall Afternoon Slot','₱17,000'],['Morning Slot (8AM–5PM)','₱15,000']]
+  },
+};
+
+function openModal(key) {
+  const d = modalData[key];
+  if(!d) return;
+  const rateRows = d.rates.map(r => `<div class="modal-rate-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+  const features = d.features.map(f => `<div class="modal-feature-item">${f}</div>`).join('');
+  const heroHtml = d.photo
+    ? `<div class="modal-photo-hero"><img src="${d.photo}" alt="${d.title}" /></div>`
+    : `<div class="modal-photo-hero fallback">🏡</div>`;
+
+  // Build reserved dates section
+  const blocked = getBlockedDatesForPkg(key);
+  const today   = new Date().toISOString().split('T')[0];
+  const upcoming = [...blocked].filter(dt => dt >= today).sort();
+  const fmt = (dt) => new Date(dt + 'T00:00:00').toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+  const reservedSection = upcoming.length > 0
+    ? `<p class="modal-section-lbl" style="color:var(--reserved);">🚫 Reserved Dates (Unavailable)</p>
+       <div class="modal-reserved-box">
+         <p style="font-size:0.8rem;color:#9b1c1c;margin-bottom:0.5rem;">The following dates are already booked and cannot be reserved:</p>
+         <div class="modal-reserved-dates">${upcoming.map(dt => `<span class="modal-reserved-date">${fmt(dt)}</span>`).join('')}</div>
+       </div>`
+    : '';
+
+  document.getElementById('pkgModalBox').innerHTML = `
+    ${heroHtml}
+    <div class="modal-inner">
+      <div class="modal-header-row">
+        <div>
+          <span class="pkg-badge ${d.badgeCls}" style="margin-bottom:0.5rem;">${d.badge}</span>
+          <div class="modal-pkg-title">${d.title}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;flex-shrink:0;margin-left:1rem;">
+          <button class="modal-close-btn" onclick="closeModal()">✕</button>
+          <div class="modal-pkg-price">${d.price}<br/><small>${d.priceNote}</small></div>
+        </div>
+      </div>
+      <p class="modal-desc">${d.desc}</p>
+      ${reservedSection}
+      <p class="modal-section-lbl">What's Included</p>
+      <div class="modal-features">${features}</div>
+      <p class="modal-section-lbl">Pricing Breakdown</p>
+      <div class="modal-rate-box">${rateRows}</div>
+      <div class="modal-cta-row">
+        <button class="modal-reserve-btn" onclick="closeModal();showPage('booking');">Reserve This Package</button>
+      </div>
+    </div>`;
+  document.getElementById('pkgModal').classList.add('open');
+}
+
+function closeModal()       { document.getElementById('pkgModal').classList.remove('open'); }
+function closePkgModal(e)   { if(e.target.id === 'pkgModal') closeModal(); }
+
+// ============================================================
+//  PACKAGE RATES & NAMES
+// ============================================================
+const pkgRates = {
+  'cabin-weekday':7000,'cabin-weekend':7500,
+  'combo-2cabin':21000,'combo-1cabin':19000,
+  'day-2cabin':17000,'day-1cabin':16000,
+  'hall-morning':15000,'hall-afternoon':17000
+};
+const pkgNames = {
+  'cabin-weekday':'Cabin Stay (Mon–Thu)','cabin-weekend':'Cabin Stay (Fri–Sun & Hols)',
+  'combo-2cabin':'Cabin + Event Hall (2 Cabins)','combo-1cabin':'Cabin + Event Hall (1 Cabin)',
+  'day-2cabin':'Daytime Package (2 Cabins)','day-1cabin':'Daytime Package (1 Cabin)',
+  'hall-morning':'Event Hall Only (8AM–5PM)','hall-afternoon':'Event Hall Only (11AM–8PM)'
+};
+
+// ============================================================
+//  BOOKING FORM — with reservation check
+// ============================================================
+function updateSummary() {
+  const pkg    = document.getElementById('f_package').value;
+  const guests = parseInt(document.getElementById('f_guests').value) || 0;
+  const date   = document.getElementById('f_date').value;
+  const name   = document.getElementById('f_name').value;
+  const summary = document.getElementById('bookingSummary');
+  const rows    = document.getElementById('summaryRows');
+  const warning = document.getElementById('reservedWarning');
+  const submitBtn = document.getElementById('submitBtn');
+  const availBar  = document.getElementById('availabilityBar');
+  const availGrid = document.getElementById('availDatesGrid');
+
+  // Show availability info when package is selected
+  if (pkg) {
+    const blocked = getBlockedDatesForPkg(pkg);
+    const today = new Date().toISOString().split('T')[0];
+    const upcoming = [...blocked].filter(d => d >= today).sort();
+    const fmt = (d) => new Date(d + 'T00:00:00').toLocaleDateString('en-PH', { month:'short', day:'numeric' });
+
+    if (upcoming.length > 0) {
+      availGrid.innerHTML = upcoming.map(d =>
+        `<span class="avail-date-chip taken">🚫 ${fmt(d)}</span>`
+      ).join('');
+      availBar.classList.add('show');
+    } else {
+      availBar.classList.remove('show');
+    }
+  } else {
+    availBar.classList.remove('show');
+  }
+
+  // Check reservation conflict
+  if (pkg && date) {
+    if (isDateReserved(pkg, date)) {
+      // Show warning
+      const fmt = (d) => new Date(d + 'T00:00:00').toLocaleDateString('en-PH', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+      const blocked = getBlockedDatesForPkg(pkg);
+      const today = new Date().toISOString().split('T')[0];
+      const otherDates = [...blocked].filter(d => d >= today && d !== date).sort().slice(0, 3);
+      document.getElementById('reservedWarningMsg').textContent =
+        `"${pkgNames[pkg] || pkg}" is already reserved on ${fmt(date)}. Please choose a different available date.`;
+      const suggest = otherDates.length > 0
+        ? `Other reserved dates to avoid: ${otherDates.map(fmt).join(', ')}`
+        : '';
+      document.getElementById('reservedSuggestDates').textContent = suggest;
+      warning.classList.add('show');
+      submitBtn.disabled = true;
+      submitBtn.textContent = '🚫 Date Unavailable – Choose Another Date';
+    } else {
+      warning.classList.remove('show');
+      submitBtn.disabled = false;
+      submitBtn.textContent = '✉️ Send Booking Request';
+    }
+  } else {
+    warning.classList.remove('show');
+    if (!document.getElementById('submitBtn').disabled || (pkg && date)) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '✉️ Send Booking Request';
+    }
+  }
+
+  if(!pkg) { summary.style.display = 'none'; return; }
+  let baseRate = pkgRates[pkg] || 0;
+  let extraCharge = 0, extraNote = '';
+  if((pkg === 'cabin-weekday' || pkg === 'cabin-weekend') && guests > 16) {
+    extraCharge = (guests - 16) * 300;
+    extraNote = `+₱300 × ${guests - 16} extra guests`;
+  }
+  const total = baseRate + extraCharge;
+  rows.innerHTML = `
+    <div class="summary-row"><span>Guest</span><span>${name || '—'}</span></div>
+    <div class="summary-row"><span>Package</span><span>${pkgNames[pkg]}</span></div>
+    <div class="summary-row"><span>Date</span><span>${date ? new Date(date+'T00:00:00').toLocaleDateString('en-PH',{weekday:'short',year:'numeric',month:'long',day:'numeric'}) : '—'}</span></div>
+    <div class="summary-row"><span>Guests</span><span>${guests || '—'}</span></div>
+    <div class="summary-row"><span>Base Rate</span><span>₱${baseRate.toLocaleString()}</span></div>
+    ${extraCharge ? `<div class="summary-row"><span>${extraNote}</span><span>+₱${extraCharge.toLocaleString()}</span></div>` : ''}
+    <div class="summary-row"><span>Estimated Total</span><span>₱${total.toLocaleString()}</span></div>`;
+  summary.style.display = 'block';
+}
+
+// ============================================================
+//  SUBMIT BOOKING
+// ============================================================
+function submitBooking() {
+  const name   = document.getElementById('f_name').value.trim();
+  const phone  = document.getElementById('f_phone').value.trim();
+  const email  = document.getElementById('f_email').value.trim();
+  const guests = parseInt(document.getElementById('f_guests').value) || 0;
+  const date   = document.getElementById('f_date').value;
+  const pkg    = document.getElementById('f_package').value;
+  const notes  = document.getElementById('f_notes').value.trim();
+
+  if(!name || !phone || !date || !pkg || !guests) {
+    alert('⚠️ Please fill in all required fields: Name, Phone, Date, Package, and Number of Guests.');
+    return;
+  }
+
+  // Double-check reservation (in case state changed)
+  if (isDateReserved(pkg, date)) {
+    alert(`🚫 Sorry, "${pkgNames[pkg]}" is already reserved on that date. Please pick a different date.`);
+    return;
+  }
+
+  let baseRate = pkgRates[pkg] || 0;
+  let extra = (pkg==='cabin-weekday'||pkg==='cabin-weekend') && guests>16 ? (guests-16)*300 : 0;
+
+  const newBooking = {
+    id: 'BK-' + Date.now(),
+    name, phone, email, guests, date,
+    pkg: pkgNames[pkg],
+    pkgKey: pkg,          // ← store the key for reservation lookups
+    notes,
+    status: 'pending',
+    total: baseRate + extra,
+    ts: new Date().toISOString()
+  };
+
+  bookings.unshift(newBooking);
+  saveBookings();
+
+  // Clear form
+  ['f_name','f_phone','f_email','f_guests','f_date','f_notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f_package').value = '';
+  document.getElementById('bookingSummary').style.display = 'none';
+  document.getElementById('reservedWarning').classList.remove('show');
+  document.getElementById('availabilityBar').classList.remove('show');
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = '✉️ Send Booking Request';
+
+  showToast(`✅ Booking request saved! Thank you, ${name}. Date is now reserved.`);
+  renderStats();
+
+  // Refresh package cards so the new reserved date shows immediately
+  refreshPackageCardReservations();
+}
+
+// ============================================================
+//  ADMIN STATS & TABLES
+// ============================================================
+function renderStats() {
+  const total     = bookings.length;
+  const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+  const pending   = bookings.filter(b => b.status === 'pending').length;
+  const revenue   = bookings.filter(b => b.status === 'confirmed').reduce((s, b) => s + b.total, 0);
+  document.getElementById('stat-total').textContent     = total;
+  document.getElementById('stat-confirmed').textContent = confirmed;
+  document.getElementById('stat-pending').textContent   = pending;
+  document.getElementById('stat-revenue').textContent   = '₱' + revenue.toLocaleString();
+  renderBookingsTable(bookings.slice(0, 5), 'dashboardTableBody', true);
+}
+
+function statusBadge(s) {
+  const map = { confirmed:'status-confirmed', pending:'status-pending', cancelled:'status-cancelled' };
+  return `<span class="status-badge ${map[s]||''}">${s}</span>`;
+}
+
+function renderBookingsTable(data, tbodyId = 'bookingsTableBody', short = false) {
+  const tb = document.getElementById(tbodyId);
+  if(!tb) return;
+  if(!data.length) {
+    tb.innerHTML = `<tr><td colspan="${short ? 6 : 7}"><div class="empty-state"><div class="empty-icon">📭</div><p>No bookings yet.</p></div></td></tr>`;
+    return;
+  }
+  tb.innerHTML = data.map(b => {
+    const idx = bookings.indexOf(b);
+    return `
+    <tr>
+      <td><strong>${b.name}</strong><br/><span style="font-size:0.75rem;color:var(--text-light)">${b.id||''}</span></td>
+      ${!short ? `<td>${b.phone}<br/><span style="font-size:0.78rem;color:var(--text-light)">${b.email||'—'}</span></td>` : ''}
+      <td>${b.pkg}</td>
+      <td>${b.date}</td>
+      <td>${b.guests}</td>
+      <td>${statusBadge(b.status)}</td>
+      <td>
+        ${b.status==='pending'    ? `<button class="action-btn" onclick="setStatus(${idx},'confirmed')">Confirm</button>` : ''}
+        ${b.status!=='cancelled'  ? `<button class="action-btn danger" onclick="setStatus(${idx},'cancelled')">Cancel</button>` : ''}
+        <button class="action-btn danger" onclick="deleteBooking(${idx})" style="margin-top:0.2rem;">Delete</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ============================================================
+//  RESERVED DATES ADMIN PANEL
+// ============================================================
+function renderReservedDatesPanel() {
+  const panel = document.getElementById('reservedDatesPanel');
+  if (!panel) return;
+
+  // Group by package
+  const grouped = {};
+  const today   = new Date().toISOString().split('T')[0];
+
+  bookings.forEach(b => {
+    if (b.status === 'cancelled') return;
+    const key  = b.pkgKey || getKeyFromName(b.pkg);
+    const name = pkgNames[key] || b.pkg;
+    if (!grouped[key]) grouped[key] = { name, dates: [] };
+    if (!grouped[key].dates.includes(b.date)) grouped[key].dates.push(b.date);
+  });
+
+  const entries = Object.entries(grouped);
+  if (entries.length === 0) {
+    panel.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><p>No reserved dates yet.</p></div>';
+    return;
+  }
+
+  const fmt = (d) => new Date(d + 'T00:00:00').toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+
+  panel.innerHTML = `
+    <h3>🚫 All Reserved Dates by Package</h3>
+    <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:1.2rem;">
+      Dates are blocked as soon as a booking is submitted (pending or confirmed).<br/>
+      Cancelling or deleting a booking will free up the date.
+    </p>
+    ${entries.map(([pkgKey, grp]) => {
+      const sorted  = grp.dates.sort();
+      const upcoming = sorted.filter(d => d >= today);
+      const past     = sorted.filter(d => d < today);
+      return `
+        <div class="reserved-pkg-group">
+          <div class="reserved-pkg-name">${grp.name}</div>
+          <div class="reserved-chips">
+            ${upcoming.map(d => `
+              <span class="reserved-chip">
+                📅 ${fmt(d)}
+                <button title="Manually unblock this date" onclick="unblockDate('${pkgKey}','${d}')">✕</button>
+              </span>`).join('')}
+            ${past.map(d => `
+              <span class="reserved-chip" style="opacity:0.45;text-decoration:line-through;" title="Past date">
+                ${fmt(d)}
+              </span>`).join('')}
+            ${upcoming.length === 0 && past.length > 0 ? '<span style="font-size:0.78rem;color:var(--text-light)">No upcoming reserved dates</span>' : ''}
+          </div>
+        </div>`;
+    }).join('')}`;
+}
+
+/**
+ * Manually unblock a date for a package by cancelling all non-cancelled bookings for that date+package.
+ */
+function unblockDate(pkgKey, date) {
+  if (!confirm(`Unblock ${date} for this package? This will CANCEL all bookings for that date.`)) return;
+  let changed = false;
+  bookings.forEach(b => {
+    const bKey = b.pkgKey || getKeyFromName(b.pkg);
+    if (bKey === pkgKey && b.date === date && b.status !== 'cancelled') {
+      b.status = 'cancelled';
+      changed = true;
+    }
+  });
+  if (changed) {
+    saveBookings();
+    showToast(`✅ ${date} unblocked. Bookings cancelled.`);
+    renderReservedDatesPanel();
+    renderStats();
+    refreshPackageCardReservations();
+  }
+}
+
+// ============================================================
+//  BOOKING STATUS ACTIONS
+// ============================================================
+function setStatus(idx, status) {
+  if(idx < 0 || idx >= bookings.length) return;
+  bookings[idx].status = status;
+  saveBookings();
+  showToast(`✅ Booking ${status}.`);
+  renderStats();
+  renderBookingsTable(bookings);
+  renderGuestsTable();
+  refreshPackageCardReservations(); // refresh reserved badges
+}
+
+function deleteBooking(idx) {
+  if(!confirm('Delete this booking permanently?')) return;
+  bookings.splice(idx, 1);
+  saveBookings();
+  showToast('🗑️ Booking deleted.');
+  renderStats();
+  renderBookingsTable(bookings);
+  renderGuestsTable();
+  refreshPackageCardReservations(); // refresh reserved badges
+}
+
+function searchBookings(q) {
+  const filtered = q
+    ? bookings.filter(b => b.name.toLowerCase().includes(q.toLowerCase()) || b.pkg.toLowerCase().includes(q.toLowerCase()))
+    : bookings;
+  renderBookingsTable(filtered);
+}
+
+// ============================================================
+//  OFFERS TABLE
+// ============================================================
+function renderOffersTable() {
+  const tb = document.getElementById('offersTableBody');
+  if(!tb) return;
+  tb.innerHTML = offers.map((o, i) => `
+    <tr>
+      <td class="offer-icon">${o.icon}</td>
+      <td><strong>${o.name}</strong></td>
+      <td><span class="status-badge" style="background:#e8f4e8;color:var(--forest);">${o.cat}</span></td>
+      <td style="font-weight:700;color:var(--gold);">₱${Number(o.rate).toLocaleString()}</td>
+      <td>${o.duration}</td>
+      <td style="font-size:0.78rem;color:var(--text-light);max-width:160px;">${o.notes}</td>
+      <td>
+        <button class="action-btn" onclick="editOffer(${i})">Edit</button>
+        <button class="action-btn danger" onclick="deleteOffer(${i})">Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderGuestsTable() {
+  const tb = document.getElementById('guestsTableBody');
+  if(!tb) return;
+  if(!bookings.length) {
+    tb.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👥</div><p>No guests yet.</p></div></td></tr>`;
+    return;
+  }
+  const seen = {}, guests = [];
+  bookings.forEach(b => { if(!seen[b.phone]) { seen[b.phone] = true; guests.push(b); } });
+  tb.innerHTML = guests.map(b => `
+    <tr>
+      <td><strong>${b.name}</strong></td>
+      <td>${b.email||'—'}</td>
+      <td>${b.phone}</td>
+      <td>${b.date}</td>
+      <td>${bookings.filter(x => x.phone === b.phone).length}</td>
+    </tr>`).join('');
+}
+
+// ============================================================
+//  ADD / EDIT OFFER
+// ============================================================
+function openAddOffer() {
+  editOfferIdx = null;
+  document.getElementById('offerModalTitle').textContent = 'Add Package';
+  ['om_icon','om_name','om_rate','om_duration','om_notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('om_cat').value = 'cabin';
+  document.getElementById('offerModalOverlay').classList.remove('hidden');
+}
+function editOffer(i) {
+  editOfferIdx = i;
+  const o = offers[i];
+  document.getElementById('offerModalTitle').textContent = 'Edit Package';
+  document.getElementById('om_icon').value     = o.icon;
+  document.getElementById('om_name').value     = o.name;
+  document.getElementById('om_cat').value      = o.cat;
+  document.getElementById('om_rate').value     = o.rate;
+  document.getElementById('om_duration').value = o.duration;
+  document.getElementById('om_notes').value    = o.notes;
+  document.getElementById('offerModalOverlay').classList.remove('hidden');
+}
+function closeOfferModal() { document.getElementById('offerModalOverlay').classList.add('hidden'); }
+function saveOffer() {
+  const obj = {
+    icon:     document.getElementById('om_icon').value     || '🏠',
+    name:     document.getElementById('om_name').value.trim(),
+    cat:      document.getElementById('om_cat').value,
+    rate:     parseFloat(document.getElementById('om_rate').value) || 0,
+    duration: document.getElementById('om_duration').value.trim(),
+    notes:    document.getElementById('om_notes').value.trim(),
+  };
+  if(!obj.name || !obj.rate) { alert('Please fill in at least a name and rate.'); return; }
+  if(editOfferIdx !== null) offers[editOfferIdx] = obj;
+  else offers.push(obj);
+  saveOffers();
+  closeOfferModal();
+  renderOffersTable();
+  showToast('💾 Package saved!');
+}
+function deleteOffer(i) {
+  if(!confirm('Delete this package?')) return;
+  offers.splice(i, 1);
+  saveOffers();
+  renderOffersTable();
+  showToast('🗑️ Package deleted.');
+}
+
+// ============================================================
+//  CLEAR ALL DATA
+// ============================================================
+function clearAllData() {
+  if(!confirm('⚠️ This will permanently delete ALL bookings and custom packages.\n\nAre you absolutely sure?')) return;
+  Object.values(LS_KEYS).forEach(k => lsDel(k));
+  bookings = [];
+  offers   = [...DEFAULT_PACKAGES];
+  isAuthenticated = true;
+  lsSet(LS_KEYS.AUTH, true);
+  lsSet(LS_KEYS.OFFERS, offers);
+  renderStats();
+  renderOffersTable();
+  renderGuestsTable();
+  refreshPackageCardReservations();
+  showToast('🗑️ All data cleared. Packages reset to defaults.', 4000);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+(function init() {
+  renderOffersTable();
+  renderStats();
+  refreshPackageCardReservations();
+
+  const lastPage = lsGet(LS_KEYS.LAST_PAGE, 'home');
+  if(isAuthenticated && lastPage && lastPage !== 'admin') showPage(lastPage);
+})();
+</script>
+</body>
+</html>
