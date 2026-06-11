@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tres Marias Cabin by AVM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
+</head>
+<body>
+<div class="app">
+
+  <div class="toast" id="toast"><span class="toast-icon"></span><span id="toastMsg"></span></div>
+
+  <nav class="nav">
+    <div class="nav-brand">
+      <img src="Logo.jpg" alt="Tres Marias Logo" class="nav-logo">
+      <div>Tres Marias Cabin<span>by AVM</span></div>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('home')">Home</button>
+      <button class="nav-tab" onclick="showPage('packages')">Packages</button>
+      <button class="nav-tab" onclick="showPage('booking')">Book Now</button>
+      
+
+      <button class="btn-footer-dev-btn" onclick="openDevelopers()">
+        Developers
+      </button>
+    </div>
+  </nav>
+
+  <div id="page-home" class="page active">
+    <section class="hero">
+      <div class="hero-tag">NOW ACCEPTING RESERVATIONS</div>
+      <h1>Tres Marias Cabin<br/><em>by AVM</em></h1>
+      <p class="hero-sub">Nature meets comfort — your next perfect getaway for rest, reunions, or retreats.</p>
+      <p class="hero-loc">📍 Purok 6 Pinagtung-ulan, Lipa City, Batangas</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="showPage('booking')">Reserve Now</button>
+        <button class="btn-outline" onclick="showPage('packages')">View Packages</button>
+
+        
+      </div>
+    </section>
+    
+    <div class="photo-strip">
+      <img class="photo-main" src="A-Frame Cabins.jpg" alt="A-Frame Cabins" />
+      <img class="photo-hall" src="Event Hall.jpg" alt="Event Hall" />
+      <img class="photo-pool" src="Pool.jpg" alt="Pool" />
+      <img class="photo-int"  src="Interior.jpg" alt="Interior" />
+      <img class="photo-amen" src="Amenities.jpg" alt="Amenities" />
+      <img class="photo-kit"  src="Kitchen.jpg" alt="Kitchen" />
+      <img class="photo-bath" src="Bathroom.jpg" alt="Bathroom" />
+      <img class="photo-gril" src="Griller.jpg" alt="Griller" />
+    </div>
+
+    <div class="section">
+      <p class="section-tag">The Experience</p>
+      <h2>Your Nature Sanctuary Awaits</h2>
+      <p class="section-desc">Escape the city and unwind in our A-Frame cabins nestled in nature. Enjoy a serene emerald-toned infinity pool, al fresco dining, and open-sky evenings with family and friends.</p>
+      <div class="amenities-grid">
+        <div class="amenity-card"><div class="icon">🏠</div><div class="lbl">A-Frame Cabin<br/>Good for 8 guests</div></div>
+        <div class="amenity-card"><div class="icon">🌊</div><div class="lbl">Sukabumi Stone<br/>Infinity Pool (50 sqm)</div></div>
+        <div class="amenity-card"><div class="icon">🎤</div><div class="lbl">Videoke Setup<br/>in Pavilion</div></div>
+        <div class="amenity-card"><div class="icon">🍳</div><div class="lbl">Basic Kitchen<br/>& Griller</div></div>
+        <div class="amenity-card"><div class="icon">🚿</div><div class="lbl">Outdoor<br/>Washroom</div></div>
+        <div class="amenity-card"><div class="icon">🅿️</div><div class="lbl">Gated Parking<br/>10–15 Vehicles</div></div>
+        <div class="amenity-card"><div class="icon">🌿</div><div class="lbl">Surrounded<br/>by Nature</div></div>
+        <div class="amenity-card"><div class="icon">🎪</div><div class="lbl">Event Hall<br/>Up to 100 pax</div></div>
+      </div>
+      <div class="pricing-note">
+        <div class="pricing-note-item"><div class="pn-label">⏱ Duration</div><div class="pn-val"><strong>22-hour stay</strong><br/>Cabin rentals run 22 hrs</div></div>
+        <div class="pricing-note-item"><div class="pn-label">👥 Guest Policy</div><div class="pn-val">Good for <strong>8 guests</strong> per cabin<br/>+₱300/head beyond 16 pax<br/>Must rent 2 cabins if group exceeds 8</div></div>
+        <div class="pricing-note-item"><div class="pn-label">📅 Rates Vary</div><div class="pn-val"><strong>Mon–Thu:</strong> ₱7,000/cabin<br/><strong>Fri–Sun & Holidays:</strong> ₱7,500/cabin</div></div>
+        <div class="pricing-note-item"><div class="pn-label">🎉 Events</div><div class="pn-val">Event Hall packages available<br/>for <strong>61–100 pax</strong> groups</div></div>
+      </div>
+    </div>
+
+    <div class="contact-bar">
+      <p>For reservations &amp; inquiries</p>
+      <div class="phone">📞 +63 938 557 5257</div>
+      <p><a href="#">Message us on Facebook</a> · <a href="#">Instagram</a></p>
+
+    
+    </div>
+  </div>
+
+
+<div class="modal-overlay" id="developersModal" onclick="closeDevelopers(event)">
+  <div class="modal-box" style="max-width:1050px;background:#faf8f4;border-radius:26px;padding:3rem;position:relative;">
+    
+    <button class="modal-close-btn" onclick="closeDevelopers()" style="position:absolute;top:18px;right:18px;">✕</button>
+
+    <div style="text-align:center;margin-bottom:2.5rem;">
+      <p style="color:#c9a84c;font-size:0.75rem;font-weight:800;letter-spacing:0.35em;text-transform:uppercase;margin-bottom:0.8rem;">
+        Behind the System
+      </p>
+      <h2 style="font-family:'Playfair Display',serif;color:#1a2e1a;font-size:3rem;margin-bottom:0.8rem;">
+        Creative Development Team
+      </h2>
+      <p style="color:#4a4a4a;font-size:1rem;line-height:1.7;max-width:650px;margin:auto;">
+        Meet the team responsible for designing and developing the Tres Marias Cabin by AVM Reservation System.
+      </p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+
+      <div style="background:white;border:2px solid #c9a84c;border-radius:22px;padding:2rem 1.5rem;text-align:center;box-shadow:0 16px 45px rgba(201,168,76,0.25);transform:translateY(-8px);">
+        <div style="display:inline-block;background:#c9a84c;color:white;padding:0.45rem 1rem;border-radius:30px;font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.4rem;">
+          👑 Lead Developer
+        </div>
+        <img src="Johnrey.jpg"
+     alt="John Rey B. Obrador"
+     style="width:110px;height:110px;border-radius:50%;object-fit:cover;
+     border:4px solid #c9a84c;
+     box-shadow:0 10px 25px rgba(0,0,0,.15);
+     margin:0 auto 1.3rem;display:block;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.45rem;color:#1a1a1a;margin-bottom:0.5rem;">
+          John Rey B. Obrador
+        </h3>
+        <h4 style="color:#c9a84c;font-size:0.82rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.2rem;">
+          Team Leader
+        </h4>
+        <p style="color:#6f8178;font-size:0.9rem;line-height:1.7;">
+          Led the development process, system planning, feature organization, and overall project direction.
+        </p>
+      </div>
+
+      <div style="background:white;border:1px solid #e0d8cc;border-radius:22px;padding:2rem 1.5rem;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <div style="display:inline-block;background:#e6ddcf;color:#1a2e1a;padding:0.45rem 1rem;border-radius:30px;font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.4rem;">
+          Member
+        </div>
+        <img src="Crishia.jpg"
+     alt="Crishia Joy C. Atienza"
+     style="width:110px;height:110px;border-radius:50%;object-fit:cover;
+     border:4px solid #e0d8cc;
+     box-shadow:0 10px 25px rgba(0,0,0,.15);
+     margin:0 auto 1.3rem;display:block;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.45rem;color:#1a1a1a;margin-bottom:0.5rem;">
+          Crishia Joy C. Atienza
+        </h3>
+        <h4 style="color:#c9a84c;font-size:0.82rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.2rem;">
+          Project Member
+        </h4>
+        <p style="color:#6f8178;font-size:0.9rem;line-height:1.7;">
+          Assisted in content preparation, layout planning, interface checking, and system documentation.
+        </p>
+      </div>
+
+      <div style="background:white;border:1px solid #e0d8cc;border-radius:22px;padding:2rem 1.5rem;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <div style="display:inline-block;background:#e6ddcf;color:#1a2e1a;padding:0.45rem 1rem;border-radius:30px;font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.4rem;">
+          Member
+        </div>
+        <img src="JohnAron.jpg"
+     alt="John Aron T. Banzuela"
+     style="width:110px;height:110px;border-radius:50%;object-fit:cover;
+     border:4px solid #e0d8cc;
+     box-shadow:0 10px 25px rgba(0,0,0,.15);
+     margin:0 auto 1.3rem;display:block;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.45rem;color:#1a1a1a;margin-bottom:0.5rem;">
+          John Aron T. Banzuela
+        </h3>
+        <h4 style="color:#c9a84c;font-size:0.82rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.2rem;">
+          Project Member
+        </h4>
+        <p style="color:#6f8178;font-size:0.9rem;line-height:1.7;">
+          Assisted in system layout, testing, feature review, and overall project support.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <div id="page-packages" class="page">
+    <div class="packages-section">
+      <div class="packages-inner">
+        <p class="section-tag">Our Offerings</p>
+        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--forest);margin-bottom:0.5rem;">Packages &amp; Rates</h2>
+        <p style="color:var(--text-mid);font-size:0.95rem;line-height:1.7;max-width:600px;">Choose the package that fits your group and occasion. All cabin stays are 22 hours and include pool access, pavilion use, and gated parking.</p>
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterPkgs(this,'all')">All Packages</button>
+          <button class="filter-btn" onclick="filterPkgs(this,'cabin')">Cabin Stay</button>
+          <button class="filter-btn" onclick="filterPkgs(this,'event')">Event Hall</button>
+          <button class="filter-btn" onclick="filterPkgs(this,'combo')">Cabin + Event</button>
+          <button class="filter-btn" onclick="filterPkgs(this,'day')">Daytime</button>
+        </div>
+        <div class="packages-grid" id="packagesGrid"></div>
+        <div style="margin-top:2rem;padding:1.4rem 1.8rem;background:white;border:1px solid var(--border);border-radius:14px;">
+          <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:0.8rem;">📋 Important Rate Notes</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.6rem 2rem;">
+            <p style="font-size:0.83rem;color:var(--text-mid);">• All cabin stays are <strong>22 hours</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Weekday rate (Mon–Thu): <strong>₱7,000</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Weekend/Holiday rate (Fri–Sun): <strong>₱7,500</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Each cabin is good for <strong>up to 8 guests</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Groups of 9–16: must rent <strong>2 cabins</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Beyond 16 guests: <strong>+₱300/head</strong></p>
+            <p style="font-size:0.83rem;color:var(--text-mid);">• Event Hall packages for <strong>61–100 pax</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-booking" class="page">
+    <div class="booking-section">
+      <div class="booking-inner">
+        <p class="section-tag">Reservations</p>
+        <h2>Book Your Stay</h2>
+        <p style="color:#7a9e7a;font-size:0.95rem;line-height:1.6;margin-top:0.4rem;">Fill in the form below and we'll confirm your reservation within 24 hours.</p>
+        <div class="booking-form">
+
+          <div class="reserved-warning" id="reservedWarning">
+            <div class="reserved-warning-icon">🚫</div>
+            <div>
+              <h4>This date is already RESERVED</h4>
+              <p id="reservedWarningMsg">This package is already booked on the selected date. Please choose a different date or package.</p>
+              <p class="suggest-dates" id="reservedSuggestDates"></p>
+            </div>
+          </div>
+
+         
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Enter your full name" id="f_name" oninput="updateSummary()" />
+            </div>
+            <div class="form-group">
+              <label>Contact Number</label>
+              <input
+                type="tel"
+                placeholder="Enter your contact number"
+                id="f_phone"
+                maxlength="11"
+                inputmode="numeric"
+                pattern="[0-9]{11}"
+                oninput="this.value=this.value.replace(/\D/g,'')"
+              />
+            </div>
+          </div>
+
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="Enter your email address" id="f_email" />
+            </div>
+            <div class="form-group">
+              <label>Number of Guests</label>
+              <input type="number" min="1" max="100" placeholder="e.g. 10" id="f_guests" oninput="updateSummary()" />
+            </div>
+          </div>
+
+        
+          <div class="form-row">
+            <div class="form-group">
+              <label>Check-in Date</label>
+              <input type="date" id="f_date" oninput="updateSummary()" />
+            </div>
+            <div class="form-group">
+              <label>Package</label>
+              <select id="f_package" onchange="updateSummary()">
+                <option value="">— Select a Package —</option>
+              </select>
+            </div>
+          </div>
+
+       
+          <div class="availability-bar" id="availabilityBar">
+            <div class="avail-title">📅 Reserved dates for this package:</div>
+            <div class="avail-dates-grid" id="availDatesGrid"></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group-full">
+              <label>Special Requests / Notes</label>
+              <textarea placeholder="e.g. special occasion, dietary needs, room preference…" id="f_notes"></textarea>
+            </div>
+          </div>
+
+         
+          <div class="booking-summary" id="bookingSummary" style="display:none;">
+            <h4>📋 Booking Summary</h4>
+            <div id="summaryRows"></div>
+          </div>
+
+          <p class="form-note">⚠️ Bookings are not confirmed until you receive a confirmation message.</p>
+          <button class="form-submit" id="submitBtn" onclick="submitBooking()">✉️ Send Booking Request</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="page-admin" class="page">
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div class="admin-nav-item active" onclick="switchAdmin(this,'dashboard')">📊 Dashboard</div>
+        <div class="admin-nav-item" onclick="switchAdmin(this,'bookings')">📅 Bookings</div>
+        <div class="admin-nav-item" onclick="switchAdmin(this,'offers')">🏷️ Packages</div>
+        <div class="admin-nav-item" onclick="switchAdmin(this,'guests')">👥 Guests</div>
+        <div class="admin-nav-item" onclick="switchAdmin(this,'reserved')">🚫 Reserved Dates</div>
+        <div class="storage-indicator"><div class="storage-dot"></div>Data saved locally</div>
+        <div class="admin-nav-item" onclick="logoutStaff()" style="margin-top:auto;color:#ff6b6b;">🚪 Logout</div>
+      </aside>
+      <div class="admin-content">
+
+       
+        <div class="admin-panel active" id="admin-dashboard">
+          <div class="admin-header"><h2>Dashboard</h2><p>Overview of reservations and resort activity.</p></div>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Total Bookings</div><div class="stat-val" id="stat-total">0</div><div class="stat-sub">All time</div></div>
+            <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-val" id="stat-confirmed">0</div><div class="stat-sub">Active reservations</div></div>
+            <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-val" id="stat-pending">0</div><div class="stat-sub">Awaiting confirmation</div></div>
+            <div class="stat-card"><div class="stat-label">Est. Revenue</div><div class="stat-val" id="stat-revenue">₱0</div><div class="stat-sub">Confirmed bookings</div></div>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar"><h3>Recent Bookings</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Guest</th><th>Package</th><th>Date</th><th>Guests</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="dashboardTableBody"><tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📅</div><p>No bookings yet.</p></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="danger-zone" style="margin-top:2rem;">
+            <p>⚠️ <strong>Danger Zone:</strong> Clear all locally stored data. This cannot be undone.</p>
+            <button class="btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+          </div>
+        </div>
+
+      
+        <div class="admin-panel" id="admin-bookings">
+          <div class="admin-header-row">
+            <div class="admin-header" style="margin-bottom:0;"><h2>All Bookings</h2><p>Manage and update reservation status.</p></div>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar">
+              <h3>Reservations</h3>
+              <input class="table-search" type="text" placeholder="Search guest or package…" oninput="searchBookings(this.value)" />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Guest</th><th>Contact</th><th>Package</th><th>Date</th><th>Guests</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="bookingsTableBody"><tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><p>No bookings yet.</p></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      
+        <div class="admin-panel" id="admin-offers">
+          <div class="admin-header-row">
+            <div class="admin-header" style="margin-bottom:0;"><h2>Packages &amp; Rates</h2><p>Edit packages here — changes appear instantly on the customer-facing Packages page and Booking form.</p></div>
+            <button class="add-offer-btn" onclick="openAddOffer()">+ Add Package</button>
+          </div>
+          <div class="table-card">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Icon</th><th>Package Name</th><th>Category</th><th>Rate</th><th>Duration</th><th>Notes</th><th>Actions</th></tr></thead>
+                <tbody id="offersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="admin-panel" id="admin-guests">
+          <div class="admin-header"><h2>Guest List</h2><p>All guests who have submitted booking requests.</p></div>
+          <div class="table-card">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Last Booking</th><th>Total Stays</th></tr></thead>
+                <tbody id="guestsTableBody"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👥</div><p>No guests yet.</p></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-panel" id="admin-reserved">
+          <div class="admin-header"><h2>Reserved Dates</h2><p>All dates blocked from new bookings. Dates are auto-added when a booking is pending or confirmed, and cleared when cancelled or deleted.</p></div>
+          <div class="reserved-dates-panel" id="reservedDatesPanel"><div class="empty-state"><div class="empty-icon">📅</div><p>No reserved dates yet.</p></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+ 
+  <div class="modal-overlay" id="pkgModal" onclick="closePkgModal(event)">
+    <div class="modal-box" id="pkgModalBox"></div>
+  </div>
+
+ 
+  <div class="admin-modal-overlay hidden" id="offerModalOverlay">
+    <div class="admin-modal">
+      <h3 id="offerModalTitle">Add Package</h3>
+      <div class="admin-modal-grid">
+        <div class="form-group"><label>Icon (Emoji)</label><input type="text" id="om_icon" placeholder="e.g. 🏠" maxlength="4" /></div>
+        <div class="form-group"><label>Category</label>
+          <select id="om_cat">
+            <option value="cabin">Cabin Stay</option>
+            <option value="event">Event Hall</option>
+            <option value="combo">Cabin + Event</option>
+            <option value="day">Daytime</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Package Name</label><input type="text" id="om_name" placeholder="e.g. A-Frame Cabin Stay – Weekday" /></div>
+        <div class="form-group"><label>Rate (₱)</label><input type="number" id="om_rate" placeholder="e.g. 7000" readonly/></div>
+        <div class="form-group"><label>Duration / Slot</label><input type="text" id="om_duration" placeholder="e.g. 22 hrs" /></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Notes</label><textarea id="om_notes" placeholder="e.g. Good for 8 guests, Mon–Thu rate"></textarea></div>
+      </div>
+      <div class="admin-modal-actions">
+        <button class="btn-cancel" onclick="closeOfferModal()">Cancel</button>
+        <button class="btn-save" onclick="saveOffer()">Save Package</button>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div id="calPopup" class="cal-popup"></div>
+
+</div>
+</body>
+</html>
